@@ -1,0 +1,86 @@
+npm init -y
+
+
+npm i --save-dev webpack webpack-cli webpack-dev-server
+
+
+npm i react react-dom
+
+
+npm i --save-dev babel-loader @babel/preset-env @babel/core @babel/plugin-transform-runtime @babel/preset-react babel-eslint @babel/runtime
+
+
+touch .babelrc
+// add the below code
+{
+  "presets": ["@babel/preset-env", "@babel/preset-react"],
+  "plugins": ["@babel/plugin-transform-runtime"]
+}
+
+
+touch webpack.config.js
+// add below code
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  entry: "./index.js",
+  output: {
+    path: path.resolve(__dirname, "public"),
+    filename: "main.js",
+  },
+
+  target: "web",
+  devServer: {
+    port: "3000",
+    static: ["./public"],
+    open: true,
+    hot: true,
+    liveReload: true,
+  },
+  resolve: {
+    extensions: [".js", ".jsx", ".json", ".ts"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: "babel-loader",
+      },
+    ],
+  },
+};
+
+
+add below 2 lines in package.json scripts
+    "start": "webpack-dev-server .",
+    "build": "webpack ."
+and change "main" to "./src/index.js"
+
+mkdir public
+mkdir src
+
+
+touch public/index.html
+	create a div with id="root" in the body (react needs this)
+
+
+touch src/index.js
+// add below code
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+
+ReactDOM.render(<App />, document.querySelector("#root"));
+
+
+touch src/App.js
+// add below code
+import React from 'react'
+
+const App = () => {
+	return <h1>Hello wordl</h1>
+}
+
+export default App
